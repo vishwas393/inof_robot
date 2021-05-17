@@ -1,0 +1,5 @@
+inof_robot/Pose pose_start
+inof_robot/Pose pose_end
+---
+bool path_avl
+inof_robot/Pose[] points

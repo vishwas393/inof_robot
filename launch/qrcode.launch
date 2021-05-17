@@ -1,0 +1,3 @@
+<launch>
+	<node name="QRCode" pkg="inof_robot" type="QRDetector_RPi_cam.py" output="screen"/>
+</launch>

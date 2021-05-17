@@ -1,0 +1,4 @@
+<launch>
+	<node name="distance_sensor" pkg="inof_robot" type="read_distance.py" output="screen"/>
+	<node name="app_obstacle_avoidance" pkg="inof_robot" type="app_obstacle_avoidance.py" output="screen"/>
+</launch>
