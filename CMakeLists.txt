@@ -12,7 +12,10 @@ find_package(catkin REQUIRED COMPONENTS
   rospy
   std_msgs
   geometry_msgs
+  nav_msgs
   message_generation
+  tf
+  urdf
 )
 
 ## System dependencies are found with CMake's conventions
@@ -74,6 +77,7 @@ generate_messages(
   DEPENDENCIES
   std_msgs  # Or other packages containing msgs
   geometry_msgs
+  nav_msgs
 )
 
 ################################################
@@ -128,7 +132,12 @@ include_directories(
 #   src/${PROJECT_NAME}/inof_robot.cpp
 # )
 
-add_library(a_star_search_algo SHARED lib/a_star_search_algo.cpp)
+add_executable(openspace_mover_cpp src/app_inof_openspace_mover.cpp)
+add_dependencies(openspace_mover_cpp ${${PROJECT_NAME}_EXPORTED_TARGET} ${catkin_EXPORTED_TARGETS})
+target_link_libraries(openspace_mover_cpp ${catkin_LIBRARIES} )
+
+
+add_library(a_star_search_algo lib/a_star_search_algo.cpp)
 
 add_executable(path_planner lib/path_planner.cpp)
 add_dependencies(path_planner ${${PROJECT_NAME}_EXPORTED_TARGET} ${catkin_EXPORTED_TARGETS})
@@ -187,7 +196,7 @@ catkin_install_python(PROGRAMS
 
 ## Mark executables for installation
 ## See http://docs.ros.org/melodic/api/catkin/html/howto/format1/building_executables.html
-install(TARGETS path_planner
+install(TARGETS path_planner openspace_mover_cpp
   RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
 
@@ -208,7 +217,7 @@ install(DIRECTORY include/${PROJECT_NAME}/
 
 ## Mark other files for installation (e.g. launch and bag files, etc.)
 install(DIRECTORY
-  launch/
+  launch urdf config
   DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
 )
 

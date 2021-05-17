@@ -1,0 +1,214 @@
+<?xml version="1.0"?>
+
+<robot name="InterOfficeMobileRobot" xmlns:xacro="http://www.ros.org/wiki/xacro">
+	<xacro:property name="layerlen"  value="0.002"/>
+	<xacro:property name="layerradi" value="0.075"/>	
+	<xacro:property name="supportlen"  value="0.05"/>
+	<xacro:property name="supportradi" value="0.003"/>	
+	<xacro:property name="wheellen"  value="0.004"/>
+	<xacro:property name="wheelradi" value="0.025"/>
+	<xacro:property name="casterlen" value="0.012"/>
+	<xacro:property name="casterwid" value="0.012"/>
+	<xacro:property name="casterhgt" value="0.02375"/>
+	
+	<xacro:property name="layerweight" value="0.0378169"/>
+	<xacro:property name="supportweight" value="0.0015127"/>
+	<xacro:property name="wheelweight" value="0.0084038"/>
+	<xacro:property name="casterweight" value="0.0036594"/>
+
+	<material name="white_tr">
+		<color rgba="1 1 1 1"/>
+	</material>
+		
+	<material name="blackish">
+		<color rgba="0 0 0.8 1"/>
+	</material>
+	
+	<material name="black">
+		<color rgba="0 0 0 1"/>
+	</material>
+
+	<xacro:macro name="layer" params="level x y z">
+		<link name="layer${level}">
+			<visual>
+				<origin rpy="0 0 0" xyz="${x} ${y} ${z}"/>
+				<geometry>
+					<cylinder length="${layerlen}" radius="${layerradi}"/>
+				</geometry>
+				<material name="white_tr"/>
+			</visual>
+			<collision>
+				<origin rpy="0 0 0" xyz="${x} ${y} ${z}"/>
+				<geometry>
+					<cylinder length="${layerlen}" radius="${layerradi}"/>
+				</geometry>
+			</collision>
+			<inertial>
+				<origin rpy="0 0 0" xyz="${x} ${y} ${z}"/>
+				<mass value="${layerweight}"/>
+				<inertia ixx="${(layerweight*((3*layerradi*layerradi)+(layerlen*layerlen)))/12}" ixy="0" ixz="0" iyy="${(layerweight*((3*layerradi*layerradi)+(layerlen*layerlen)))/12}" iyz="0" izz="${(layerweight*(layerradi*layerradi))/2}"/>
+			</inertial>
+		</link>
+	</xacro:macro>
+
+	<xacro:macro name="support_leg" params="number x y z">
+		<link name="support_leg${number}">
+			<visual>
+				<origin rpy="0 0 0" xyz="${x} ${y} ${z}"/>
+				<geometry>
+					<cylinder length="${supportlen}" radius="${supportradi}"/>
+				</geometry>
+				<material name="blackish"/>
+			</visual>
+			<collision>
+				<origin rpy="0 0 0" xyz="${x} ${y} ${z}"/>
+				<geometry>
+					<cylinder length="${supportlen}" radius="${supportradi}"/>
+				</geometry>
+			</collision>
+			<inertial>
+				<origin rpy="0 0 0" xyz="${x} ${y} ${z}"/>
+				<mass value="${supportweight}"/>
+				<inertia ixx="${(supportweight*((3*supportradi*supportradi)+(supportlen*supportlen)))/12}" ixy="0" ixz="0" iyy="${(supportweight*((3*supportradi*supportradi)+(supportlen*supportlen)))/12}" iyz="0" izz="${(supportweight*(supportradi*supportradi))/2}"/>
+			</inertial>
+		</link>
+	</xacro:macro>
+
+
+	<xacro:macro name="caster_wheel" params="num x y z c">
+		<link name="caster_wheel${num}">
+			<visual>
+				<origin rpy="0 0 0" xyz="${x} ${y} ${z}"/>
+				<geometry>
+					<box size="${casterlen} ${casterwid} ${casterhgt}"/>
+				</geometry>
+				<material name="black"/>
+			</visual>
+			<collision>
+				<origin rpy="0 0 0" xyz="${x} ${y} ${z}"/>
+				<geometry>
+					<box size="${casterlen} ${casterwid} ${casterhgt}"/>
+				</geometry>
+			</collision>
+			<inertial>
+				<origin rpy="0 0 0" xyz="${x} ${y} ${z}"/>
+				<mass value="${casterweight}"/>
+				<inertia ixx="${(casterweight*((casterlen*casterlen)+(casterhgt*casterhgt)))/12}" ixy="0" ixz="0" iyy="${(casterweight*((casterwid*casterwid)+(casterhgt*casterhgt)))/12}" iyz="0" izz="${(casterweight*((casterlen*casterlen)+(casterwid*casterwid)))/2}"/>
+			</inertial>
+		</link>
+		<gazebo reference="caster_wheel${num}">
+			<material>Gazebo/${c}</material>
+		</gazebo>
+	</xacro:macro>
+
+	
+	<xacro:macro name="wheel" params="pos x y z">
+		<link name="wheel${pos}">
+			<visual>
+				<origin rpy="0 ${pi/2} 0" xyz="${x} ${y} ${z}"/>
+				<geometry>
+					<cylinder length="${wheellen}" radius="${wheelradi}"/>
+				</geometry>
+				<material name="black"/>
+			</visual>
+			<collision>
+				<origin rpy="0 ${pi/2} 0" xyz="${x} ${y} ${z}"/>
+				<geometry>
+					<cylinder length="${wheellen}" radius="${wheelradi}"/>
+				</geometry>
+			</collision>
+			<inertial>
+				<origin rpy="0 ${pi/2} 0" xyz="${x} ${y} ${z}"/>
+				<mass value="${wheelweight}"/>
+				<inertia ixx="${(wheelweight*((3*wheelradi*wheelradi)+(wheellen*wheellen)))/12}" ixy="0" ixz="0" iyy="${(wheelweight*((3*wheelradi*wheelradi)+(wheellen*wheellen)))/12}" iyz="0" izz="${(wheelweight*(wheelradi*wheelradi))/2}"/>
+			</inertial>
+		</link>
+
+		<gazebo reference="wheel${pos}">
+			<mu1 value="200.0"/>
+			<mu2 value="100.0"/>
+			<kp value="10000000.0"/>
+			<kd value="1.0"/>
+			<material>Gazebo/Grey</material>
+		</gazebo>
+	</xacro:macro>
+
+	<xacro:macro name="layer_wheel_joint" params="pos x y z">	
+		<joint name="layer0_wheel${pos}_joint" type="continuous">
+			<parent link="layer0"/>
+			<child link="wheel${pos}"/>
+			<origin xyz="${x} ${y} ${z}" rpy="0 0 ${pi/2}"/>
+			<axis xyz="1 0 0" rpy="0 0 0"/>
+		</joint>
+	</xacro:macro>
+	
+
+	<xacro:macro name="layer_support_joint" params="layer num x y z">
+		<joint name="layer${layer}_support${num}_joint" type="fixed">
+			<parent link="layer${layer}"/>
+			<child link="support_leg${num}"/>
+			<origin xyz="${x} ${y} ${z}"/>
+		</joint>
+	</xacro:macro>
+
+
+	<xacro:macro name="support_layer_joint" params="layer num x y z">
+		<joint name="support${num}_layer${layer}_joint" type="fixed">
+			<child link="layer${layer}"/>
+			<parent link="support_leg${num}"/>
+			<origin xyz="${x} ${y} ${z}"/>
+		</joint>
+	</xacro:macro>
+
+	<xacro:macro name="joint_transmission" params="pos">
+		<transmission name="wheel${pos}_trans">
+			<type>transmission_interface/SimpleTransmission</type>
+			<actuator name="$wheel${pos}_motor">
+				<mechanicalReduction>1</mechanicalReduction>
+			</actuator>
+			<joint name="layer0_wheel${pos}_joint">
+				<hardwareInterface>hardware_interface/VelocityJointInterface</hardwareInterface>
+			</joint>
+		</transmission>
+	</xacro:macro>
+	
+	
+	<xacro:macro name="layer_caster_joint" params="num x y z">
+		<joint name="layer0_caster${num}" type="fixed">
+			<child link="caster_wheel${num}"/>
+			<parent link="layer0"/>
+			<origin xyz="${x} ${y} ${z}"/>
+		</joint>
+	</xacro:macro>
+	
+
+	<xacro:layer level="0" x="0" y="0" z="${wheelradi}"/>
+	<xacro:support_leg number="0" x="0" y="0" z="${supportlen/2}"/>
+	<xacro:support_leg number="1" x="0" y="0" z="${supportlen/2}"/>
+	<xacro:support_leg number="2" x="0" y="0" z="${supportlen/2}"/>
+	<xacro:support_leg number="3" x="0" y="0" z="${supportlen/2}"/>
+	<xacro:layer level="1" x="0" y="0" z="0"/>
+	<xacro:wheel pos="r" x="0" y="0" z="0"/>
+	<xacro:wheel pos="l" x="0" y="0" z="0"/>
+	<xacro:caster_wheel num="0" x="0" y="0" z="${-casterhgt/2}" c="Blue"/>
+	<xacro:caster_wheel num="1" x="0" y="0" z="${-casterhgt/2}" c="Grey"/>
+
+	<xacro:layer_wheel_joint pos="l" y="${(layerradi+(wheellen/2))}" x="0" z="${wheelradi}"/>
+	<xacro:layer_wheel_joint pos="r" y="${-(layerradi+(wheellen/2))}" x="0" z="${wheelradi}"/>
+	<xacro:layer_support_joint layer="0" num="0" x="${0.9*(layerradi)*cos(1*pi/4)}" y="${0.9*(layerradi)*sin(1*pi/4)}" z="${wheelradi}"/>
+	<xacro:layer_support_joint layer="0" num="1" x="${0.9*(layerradi)*cos(3*pi/4)}" y="${0.9*(layerradi)*sin(3*pi/4)}" z="${wheelradi}"/>
+	<xacro:layer_support_joint layer="0" num="2" x="${0.9*(layerradi)*cos(5*pi/4)}" y="${0.9*(layerradi)*sin(5*pi/4)}" z="${wheelradi}"/>
+	<xacro:layer_support_joint layer="0" num="3" x="${0.9*(layerradi)*cos(7*pi/4)}" y="${0.9*(layerradi)*sin(7*pi/4)}" z="${wheelradi}"/>
+	<xacro:support_layer_joint layer="1" num="0" x="${-0.9*(layerradi)*cos(1*pi/4)}" y="${-0.9*(layerradi)*sin(1*pi/4)}" z="${supportlen}"/>
+	<xacro:layer_caster_joint num="0" y="${0.9*(layerradi)*cos(1*pi/2)}" x=" ${0.9*(layerradi)*sin(1*pi/2)}" z=" ${wheelradi}"/>
+	<xacro:layer_caster_joint num="1" y="${0.9*(layerradi)*cos(3*pi/2)}" x=" ${0.9*(layerradi)*sin(3*pi/2)}" z=" ${wheelradi}"/>
+	<xacro:joint_transmission pos="r"/>
+	<xacro:joint_transmission pos="l"/>
+
+
+	<gazebo>
+		<plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
+			<robotNamespace>/</robotNamespace>
+		</plugin>
+	</gazebo>
+</robot>

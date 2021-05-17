@@ -1,0 +1,28 @@
+<launch>
+	<arg name="model" default="$(find inof)/urdf/inof_robot.urdf.xacro"/>
+	<arg name="rvizconfig" default="$(find urdf_tutorial)/rviz/urdf.rviz"/>
+
+	<include file="$(find inof)/launch/gazebo.launch">
+		<arg name="model" value="$(arg model)"/>
+	</include>
+
+	<!--node name="rviz" pkg="rviz" type="rviz" args="-d $(arg rvizconfig)"/-->
+
+	<rosparam command="load" 
+			file="$(find inof)/config/joints.yaml"
+			ns="inof_joint_state_controller" />
+
+	<rosparam command="load" 
+			file="$(find inof)/config/diffdrive.yaml"
+			ns="inof_diff_drive_controller" />
+	
+
+	<node name="inof_controller_spawner" pkg="controller_manager" type="spawner"
+		args="inof_joint_state_controller inof_diff_drive_controller --shutdown-timeout 3" />
+
+	<!--node name="rqt_robot_steering" pkg="rqt_robot_steering" type="rqt_robot_steering">
+		<param name="default_topic" value="/inof_diff_drive_controller/cmd_vel"/>
+	</node-->
+
+	<node name="auto_steer" pkg="inof" type="openspace_mover_app" output="screen"/>
+</launch>

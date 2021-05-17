@@ -1,0 +1,27 @@
+type: "diff_drive_controller/DiffDriveController"
+publish_rate: 50
+
+left_wheel: ['layer0_wheell_joint']
+right_wheel: ['layer0_wheelr_joint']
+
+wheel_seperation: 0.154
+
+pose_covariance_diagonal: [0.001, 0.001, 0.001, 0.001, 0.001, 0.03]
+twist_covariance_diagonal: [0.001, 0.001, 0.001, 0.001, 0.001, 0.03]
+
+base_frame_id: layer0
+
+linear:
+        x:
+                has_velocity_limits: true
+                max_velocity: 0.4
+                has_acceleration_limits: true
+                max_acceleration: 0.4
+
+angular:
+        z:
+                has_velocity_limits: true
+                max_velocity: 0.4
+                has_acceleration_limits: true
+                max_acceleration: 0.4
+
