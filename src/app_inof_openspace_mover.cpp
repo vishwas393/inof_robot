@@ -54,7 +54,7 @@ class inof_robot
 	std::vector<std::pair<int, int>> path;
 	double vd = 0.0, wd = 0.0;
 	double k1=10, k2 =3, k3 =16;
-	int path_point_cnt, startup_cnt=0;
+	int path_point_cnt = 0;
 	ros::Subscriber sub_pos, sub_twst;
 	ros::Publisher pub;
 	
@@ -73,7 +73,14 @@ class inof_robot
 		if(abs(err[1]) < 0.5 and abs(err[2]) < 0.5 and path_point_cnt < path.size()-1)
 		{
 			path_point_cnt++;
-			goal[1] = path.at(path_point_cnt).first; 	goal[2] = path.at(path_point_cnt).second;	goal[0] = atan2(goal[2],goal[1]);
+			
+			goal[1] = path.at(path_point_cnt).first; 	
+			goal[2] = path.at(path_point_cnt).second;	
+			goal[0] = atan2(goal[2]-curr.pose[fid].position.y, goal[1]-curr.pose[fid].position.x);
+			
+			if      (goal[0] <= M_PI and goal[0] > M_PI/2) { goal[0] -= M_PI; }
+			else if (goal[0] > -M_PI and goal[0] < -M_PI/2) { goal[0] += M_PI; }
+			
 			ROS_WARN_STREAM("Goal Change: theta: " << goal[0] << "   x: " << goal[1] << "   y: " << goal[2] << "  cnt:  " << path_point_cnt << "\n");
 		}
 		
@@ -102,7 +109,7 @@ class inof_robot
 		ret_cmd.angular.z = (wd - ( ( (k2*vd*qe[2]) + k3*abs(vd)*tan(qe[0]) ) * ( (1+cos(2*qe[0]))/2 ) ) );
 
 		//ROS_INFO_STREAM("v: " << ret_cmd.linear.x  << "   w: " << ret_cmd.angular.z );
-		ROS_INFO_STREAM("\nte: " << (180*qe[0]/M_PI) << "   xe: " << qe[1] << "   ye: " << qe[2] << "\nvd: " << vd << "   wd: " << wd << "   v: " << ret_cmd.linear.x  << "   w: " << ret_cmd.angular.z << "\n" << "g0: " << (180*goal[0]/M_PI) << "   g1:" << goal[1] << "   g2: " << goal[2] << "\n");
+		ROS_INFO_STREAM("\nte: " << (180*qe[0]/M_PI) << "   xe: " << qe[1] << "   ye: " << qe[2] << "\nvd: " << vd << "   wd: " << wd << "   v: " << ret_cmd.linear.x  << "   w: " << ret_cmd.angular.z << "\n" << "gt: " << (180*goal[0]/M_PI) << "   gx:" << goal[1] << "   gy: " << goal[2] << "\n");
 		
 		
 
@@ -121,12 +128,20 @@ class inof_robot
 		ros::init(argc, argv, "openspace_mover_node");
 		ros::NodeHandle nh;
 		
-		path.push_back(std::make_pair(4, 4));
-		path.push_back(std::make_pair(10, 0));
-		path.push_back(std::make_pair(13,0));
-		path_point_cnt = 0;
-		goal[1] = path.at(path_point_cnt).first; 	goal[2] = path.at(path_point_cnt).second;	goal[0] = atan2(goal[2], goal[1]); 
+		path.push_back(std::make_pair( 3, 3));
+		path.push_back(std::make_pair(-3, 3));
+		path.push_back(std::make_pair( 0, 0));
+		path.push_back(std::make_pair( 3,-3));
+		path.push_back(std::make_pair(-3,-3));
+		path.push_back(std::make_pair( 0, 0));
+		
+		goal[1] = path.at(path_point_cnt).first; 	
+		goal[2] = path.at(path_point_cnt).second;	
+		goal[0] = atan2(goal[2], goal[1]); 
 
+		if      (goal[0] <= M_PI and goal[0] > M_PI/2) { goal[0] -= M_PI; }
+		else if (goal[0] > -M_PI and goal[0] < -M_PI/2) { goal[0] += M_PI; }
+		
 		pub  = nh.advertise<geometry_msgs::Twist>("/inof_diff_drive_controller/cmd_vel", 10);
 		while(pub.getNumSubscribers() == 0) {}
 		sub_pos = nh.subscribe("/gazebo/model_states", 10, &inof_robot::callback_pos, this);

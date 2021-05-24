@@ -187,6 +187,7 @@ catkin_install_python(PROGRAMS
   src/qr_obstacle_avoidance.py
   src/read_distance.py
   src/app_cmd_control.py
+  src/app_ps4controller.py
   lib/inof_robot/exponential_coord.py 
   lib/inof_robot/motions.py 
   lib/inof_robot/odometry.py

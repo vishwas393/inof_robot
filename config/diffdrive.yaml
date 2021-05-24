@@ -15,13 +15,17 @@ linear:
         x:
                 has_velocity_limits: true
                 max_velocity: 0.4
+                min_velocity: -0.4
                 has_acceleration_limits: true
                 max_acceleration: 0.4
+                min_acceleration: -0.4
 
 angular:
         z:
                 has_velocity_limits: true
                 max_velocity: 0.4
+                min_velocity: -0.4
                 has_acceleration_limits: true
                 max_acceleration: 0.4
+                min_acceleration: -0.4
 

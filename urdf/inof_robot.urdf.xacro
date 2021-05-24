@@ -49,6 +49,9 @@
 				<inertia ixx="${(layerweight*((3*layerradi*layerradi)+(layerlen*layerlen)))/12}" ixy="0" ixz="0" iyy="${(layerweight*((3*layerradi*layerradi)+(layerlen*layerlen)))/12}" iyz="0" izz="${(layerweight*(layerradi*layerradi))/2}"/>
 			</inertial>
 		</link>
+		<gazebo reference="layer${level}">
+			<material>Gazebo/Red</material>
+		</gazebo>
 	</xacro:macro>
 
 	<xacro:macro name="support_leg" params="number x y z">

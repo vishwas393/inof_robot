@@ -1,0 +1,3 @@
+<launch>
+	<node name="ps4_controller_node" pkg="trivoyer" type="app_ps4controller.py"/>
+</launch>

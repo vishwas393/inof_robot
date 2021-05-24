@@ -1,0 +1,4 @@
+<launch>
+	<node name="object_detector_node" pkg="trivoyer" type="object_detection.py"/>
+	<node name="app_object_follower" pkg="trivoyer" type="app_object_follower.py" output="screen"/>
+</launch>
