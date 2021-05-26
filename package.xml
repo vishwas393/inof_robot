@@ -2,7 +2,7 @@
 <package format="2">
   <name>inof_robot</name>
   <version>1.0.0</version>
-  <description>The INOF(INtra OFfice) two-wheeled mobile robot </description>
+  <description>The INOF(Inter Office) differential drive mobile robot </description>
 
   <!-- One maintainer tag required, multiple allowed, one person per tag -->
   <!-- Example:  -->
