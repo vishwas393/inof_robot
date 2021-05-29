@@ -1,0 +1,125 @@
+<?xml version="1.0"?>
+<sdf version="1.7">
+
+	<model name="OfficeTable">
+
+		<static>true</static>
+		<link name="link">
+			<collision name="drawers_collision">
+				<pose>1.75 0.385 0.38 0 0 0</pose>
+				<geometry>
+					<box>
+						<size>0.5 0.77 0.76</size>
+					</box>
+				</geometry>
+			</collision>
+			<visual name="drawers_visual">
+				<pose>1.75 0.385 0.38 0 0 0</pose>
+				<geometry>
+					<box>
+						<size>0.5 0.77 0.76</size>
+					</box>
+				</geometry>
+				<material>
+					<script>
+						<uri>file://media/materials/scripts/gazebo.material</uri>
+						<name>Gazebo/Grey</name>
+					</script>
+					
+					<ambient>1 1 1 1</ambient>
+					<diffuse>0.35 0.35 0.35 1</diffuse>
+					<specular>0.02 0.02 0.02 1</specular>
+					<emissive>0 0 0 1</emissive>
+				</material>
+			</visual>
+			
+
+			<collision name="sidesupport_collision">
+				<pose>0.01 0.385 0.38 0 0 0</pose>
+				<geometry>
+					<box>
+						<size>0.02 0.77 0.76</size>
+					</box>
+				</geometry>
+			</collision>
+			<visual name="sidesupport_visual">
+				<pose>0.01 0.385 0.38 0 0 0</pose>
+				<geometry>
+					<box>
+						<size>0.02 0.77 0.76</size>
+					</box>
+				</geometry>
+				<material>
+					<script>
+						<uri>file://media/materials/scripts/gazebo.material</uri>
+						<name>Gazebo/Grey</name>
+					</script>
+					
+					<ambient>1 1 1 1</ambient>
+					<diffuse>0.35 0.35 0.35 1</diffuse>
+					<specular>0.02 0.02 0.02 1</specular>
+					<emissive>0 0 0 1</emissive>
+				</material>
+			</visual>
+			
+
+			<collision name="tabletop_collision">
+				<pose>1.0 0.385 0.77 0 0 0</pose>
+				<geometry>
+					<box>
+						<size>2.0 0.77 0.02</size>
+					</box>
+				</geometry>
+			</collision>
+			<visual name="tabletop_visual">
+				<pose>1.0 0.385 0.77 0 0 0</pose>
+				<geometry>
+					<box>
+						<size>2.0 0.77 0.02</size>
+					</box>
+				</geometry>
+				<material>
+					<script>
+						<uri>file://media/materials/scripts/gazebo.material</uri>
+						<name>Gazebo/Grey</name>
+					</script>
+					
+					<ambient>1 1 1 1</ambient>
+					<diffuse>0.95 0.95 0.95 1</diffuse>
+					<specular>0.02 0.02 0.02 1</specular>
+					<emissive>0 0 0 1</emissive>
+				</material>
+			</visual>
+			
+
+			<collision name="frontsupport_collision">
+				<pose> 1.0 0.78 0.39 0 0 0</pose>
+				<geometry>
+					<box>
+						<size>2.0 0.02 0.78</size>
+					</box>
+				</geometry>
+			</collision>
+			<visual name="frontsupport_visual">
+				<pose>1.0 0.78 0.39 0 0 0</pose>
+				<geometry>
+					<box>
+						<size>2.0 0.02 0.78</size>
+					</box>
+				</geometry>
+				<material>
+					<script>
+						<uri>file://media/materials/scripts/gazebo.material</uri>
+						<name>Gazebo/Grey</name>
+					</script>
+					
+					<ambient>1 1 1 1</ambient>
+					<diffuse>0.95 0.95 0.95 1</diffuse>
+					<specular>0.02 0.02 0.02 1</specular>
+					<emissive>0 0 0 1</emissive>
+				</material>
+			</visual>
+		</link>
+	</model>
+</sdf>
+

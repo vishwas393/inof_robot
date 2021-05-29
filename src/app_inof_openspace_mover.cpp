@@ -51,7 +51,7 @@ class inof_robot
 {
 	private:
 	double goal[3];
-	std::vector<std::pair<int, int>> path;
+	std::vector<std::pair<float, float>> path;
 	double vd = 0.0, wd = 0.0;
 	double k1=10, k2 =3, k3 =16;
 	int path_point_cnt = 0;
@@ -128,12 +128,12 @@ class inof_robot
 		ros::init(argc, argv, "openspace_mover_node");
 		ros::NodeHandle nh;
 		
-		path.push_back(std::make_pair( 3, 3));
-		path.push_back(std::make_pair(-3, 3));
+		path.push_back(std::make_pair(2, 1));
+		/*path.push_back(std::make_pair(-3, 3));
 		path.push_back(std::make_pair( 0, 0));
 		path.push_back(std::make_pair( 3,-3));
 		path.push_back(std::make_pair(-3,-3));
-		path.push_back(std::make_pair( 0, 0));
+		path.push_back(std::make_pair( 0, 0));*/
 		
 		goal[1] = path.at(path_point_cnt).first; 	
 		goal[2] = path.at(path_point_cnt).second;	

@@ -1,6 +1,13 @@
 <?xml version="1.0"?>
 
-<robot name="InterOfficeMobileRobot" xmlns:xacro="http://www.ros.org/wiki/xacro">
+<robot name="inof" xmlns:xacro="http://www.ros.org/wiki/xacro">
+	
+	<gazebo>
+		<plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
+			<robotNamespace>/inof</robotNamespace>
+		</plugin>
+	</gazebo>
+	
 	<xacro:property name="layerlen"  value="0.002"/>
 	<xacro:property name="layerradi" value="0.075"/>	
 	<xacro:property name="supportlen"  value="0.05"/>
@@ -49,9 +56,9 @@
 				<inertia ixx="${(layerweight*((3*layerradi*layerradi)+(layerlen*layerlen)))/12}" ixy="0" ixz="0" iyy="${(layerweight*((3*layerradi*layerradi)+(layerlen*layerlen)))/12}" iyz="0" izz="${(layerweight*(layerradi*layerradi))/2}"/>
 			</inertial>
 		</link>
-		<gazebo reference="layer${level}">
+		<!--gazebo reference="layer${level}">
 			<material>Gazebo/Red</material>
-		</gazebo>
+		</gazebo-->
 	</xacro:macro>
 
 	<xacro:macro name="support_leg" params="number x y z">
@@ -99,9 +106,9 @@
 				<inertia ixx="${(casterweight*((casterlen*casterlen)+(casterhgt*casterhgt)))/12}" ixy="0" ixz="0" iyy="${(casterweight*((casterwid*casterwid)+(casterhgt*casterhgt)))/12}" iyz="0" izz="${(casterweight*((casterlen*casterlen)+(casterwid*casterwid)))/2}"/>
 			</inertial>
 		</link>
-		<gazebo reference="caster_wheel${num}">
+		<!--gazebo reference="caster_wheel${num}">
 			<material>Gazebo/${c}</material>
-		</gazebo>
+		</gazebo-->
 	</xacro:macro>
 
 	
@@ -128,10 +135,10 @@
 		</link>
 
 		<gazebo reference="wheel${pos}">
-			<mu1 value="200.0"/>
-			<mu2 value="100.0"/>
-			<kp value="10000000.0"/>
-			<kd value="1.0"/>
+			<mu1>200.0</mu1>
+			<mu2>100.0</mu2>
+			<kp> 10000000.0</kp>
+			<kd> 1.0</kd>
 			<material>Gazebo/Grey</material>
 		</gazebo>
 	</xacro:macro>
@@ -168,6 +175,7 @@
 			<type>transmission_interface/SimpleTransmission</type>
 			<actuator name="$wheel${pos}_motor">
 				<mechanicalReduction>1</mechanicalReduction>
+				<hardwareInterface>hardware_interface/VelocityJointInterface</hardwareInterface>
 			</actuator>
 			<joint name="layer0_wheel${pos}_joint">
 				<hardwareInterface>hardware_interface/VelocityJointInterface</hardwareInterface>
@@ -209,9 +217,5 @@
 	<xacro:joint_transmission pos="l"/>
 
 
-	<gazebo>
-		<plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
-			<robotNamespace>/</robotNamespace>
-		</plugin>
-	</gazebo>
+
 </robot>
