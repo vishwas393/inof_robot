@@ -128,7 +128,7 @@ class inof_robot
 		ros::init(argc, argv, "openspace_mover_node");
 		ros::NodeHandle nh;
 		
-		path.push_back(std::make_pair(2, 1));
+		path.push_back(std::make_pair(1, 1));
 		/*path.push_back(std::make_pair(-3, 3));
 		path.push_back(std::make_pair( 0, 0));
 		path.push_back(std::make_pair( 3,-3));

@@ -1,6 +1,7 @@
+<?xml version="1.0"?>
 <launch>
-	<arg name="model" default="$(find inof_robot)/urdf/inof_robot.urdf.xacro"/>
-	<arg name="rvizconfig" default="$(find urdf_tutorial)/rviz/urdf.rviz"/>
+	<arg name="model" default="$(find inof_robot)/urdf/mini_inof_robot.urdf.xacro"/>
+	<!--arg name="rvizconfig" default="$(find urdf_tutorial)/rviz/urdf.rviz"/-->
 
 	<include file="$(find inof_robot)/launch/gazebo.launch">
 		<arg name="model" value="$(arg model)"/>
@@ -18,7 +19,7 @@
 	
 
 	<node name="inof_controller_spawner" pkg="controller_manager" type="spawner"
-		args="inof_joint_state_controller inof_diff_drive_controller --shutdown-timeout 3" />
+		args="inof_joint_state_controller inof_diff_drive_controller" />
 
 	<!--node name="rqt_robot_steering" pkg="rqt_robot_steering" type="rqt_robot_steering">
 		<param name="default_topic" value="/inof_diff_drive_controller/cmd_vel"/>

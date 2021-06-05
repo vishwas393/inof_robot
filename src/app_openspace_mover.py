@@ -37,7 +37,7 @@ def main_application():
             p2.y = int(input("Enter destination location --> y: "))
             p2.t = 0
             resp = client(p1, p2)
-            if(resp.path_avl):
+            if(resp.path_len):
                 for x in resp.points:
                     print(str(x.x) + "," + str(x.y) + "\n")
             else:

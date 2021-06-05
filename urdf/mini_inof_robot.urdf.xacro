@@ -4,20 +4,20 @@
 	
 
 	
-	<xacro:property name="layerlen"  value="0.002"/>
-	<xacro:property name="layerradi" value="0.075"/>	
-	<xacro:property name="supportlen"  value="0.05"/>
-	<xacro:property name="supportradi" value="0.003"/>	
-	<xacro:property name="wheellen"  value="0.004"/>
-	<xacro:property name="wheelradi" value="0.025"/>
-	<xacro:property name="casterlen" value="0.012"/>
-	<xacro:property name="casterwid" value="0.012"/>
-	<xacro:property name="casterhgt" value="0.02375"/>
+	<xacro:property name="layerlen"  value="0.001"/>
+	<xacro:property name="layerradi" value="0.025"/>	
+	<xacro:property name="supportlen"  value="0.02"/>
+	<xacro:property name="supportradi" value="0.001"/>	
+	<xacro:property name="wheellen"  value="0.001"/>
+	<xacro:property name="wheelradi" value="0.008"/>
+	<xacro:property name="casterlen" value="0.004"/>
+	<xacro:property name="casterwid" value="0.004"/>
+	<xacro:property name="casterhgt" value="0.0079"/>
 	
-	<xacro:property name="layerweight" value="0.0378169"/>
-	<xacro:property name="supportweight" value="0.0015127"/>
-	<xacro:property name="wheelweight" value="0.0084038"/>
-	<xacro:property name="casterweight" value="0.0036594"/>
+	<xacro:property name="layerweight" value="0.0021009"/>
+	<xacro:property name="supportweight" value="0.0000672"/>
+	<xacro:property name="wheelweight" value="0.0002151"/>
+	<xacro:property name="casterweight" value="0.0001352"/>
 
 	<material name="white_tr">
 		<color rgba="1 1 1 1"/>

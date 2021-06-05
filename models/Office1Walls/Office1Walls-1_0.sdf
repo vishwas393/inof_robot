@@ -6,18 +6,18 @@
 		<static>true</static>
 		<link name="office">
 			<collision name="left_wall_collision">
-				<pose>0.025 1.82 1.25 1.5708 0 1.5708</pose>
+				<pose>0.005 0.5 0.3 1.5708 0 1.5708</pose>
 				<geometry>
 					<box>
-						<size>3.64 2.5 0.05</size>
+						<size>1 0.6 0.01</size>
 					</box>
 				</geometry>
 			</collision>
 			<visual name="left_wall_visual">
-				<pose>0.025 1.82 1.25 1.5708 0 1.5708</pose>
+				<pose>0.005 0.5 0.3 1.5708 0 1.5708</pose>
 				<geometry>
 					<box>
-						<size>3.64 2.5 0.05</size>
+						<size>1 0.6 0.01</size>
 						</box>
 				</geometry>
 				<material>
@@ -35,18 +35,18 @@
 	
 
 			<collision name="front_wall_collision">
-				<pose>1.42 3.615 1.25 1.5708 0 0</pose>
+				<pose>0.35 0.995 0.3 1.5708 0 0</pose>
 				<geometry>
 					<box>
-						<size>2.74 2.5 0.05</size>
+						<size>0.7 0.6 0.01</size>
 					</box>
 				</geometry>
 			</collision>
 			<visual name="front_wall_visual">
-				<pose>1.42 3.615 1.25 1.5708 0 0</pose>
+				<pose>0.35 0.995 0.3 1.5708 0 0</pose>
 				<geometry>
 					<box>
-						<size>2.74 2.5 0.05</size>
+						<size>0.7 0.6 0.01</size>
 					</box>
 				</geometry>
 				<material>
@@ -64,18 +64,18 @@
 			
 
 			<collision name="right_wall_collision">
-				<pose>3.715 1.82 1.25 1.5708 0 1.5708</pose>
+				<pose>0.995 0.5 0.3 1.5708 0 1.5708</pose>
 				<geometry>
 					<box>
-						<size>3.64 2.5 0.05</size>
+						<size>1 0.6 0.01</size>
 					</box>
 				</geometry>
 			</collision>
 			<visual name="right_wall_visual">
-				<pose>3.715 1.82 1.25 1.5708 0 1.5708</pose>
+				<pose>0.995 0.5 0.3 1.5708 0 1.5708</pose>
 				<geometry>
 					<box>
-						<size>3.64 2.5 0.05</size>
+						<size>1 0.6 0.01</size>
 					</box>
 				</geometry>
 				<material>
@@ -93,18 +93,18 @@
 
 
 			<collision name="back_wall_collision">
-				<pose>1.87 0.025 1.25 1.5708 0 0</pose>
+				<pose>0.5 0.005 0.3 1.5708 0 0</pose>
 				<geometry>
 					<box>
-						<size>3.64 2.5 0.05</size>
+						<size>1 0.6 0.01</size>
 					</box>
 				</geometry>
 			</collision>
 			<visual name="back_wall_visual">
-				<pose>1.87 0.025 1.25 1.5708  0 0</pose>
+				<pose>0.5 0.005 0.3 1.5708  0 0</pose>
 				<geometry>
 					<box>
-						<size>3.64 2.5 0.05</size>
+						<size>1 0.6 0.01</size>
 					</box>
 				</geometry>
 				<material>
@@ -122,18 +122,18 @@
 			
 
 			<collision name="column_collision">
-				<pose> 0.285 0.6 1.25 0 0 0</pose>
+				<pose> 0.06 0.16 0.3 0 0 0</pose>
 				<geometry>
 					<box>
-						<size>0.47 0.37 2.5</size>
+						<size>0.1 0.1 0.6</size>
 					</box>
 				</geometry>
 			</collision>
 			<visual name="column_visual">
-				<pose>0.285 0.6 1.25 0 0 0</pose>
+				<pose>0.06 0.16 0.3 0 0 0</pose>
 				<geometry>
 					<box>
-						<size>0.47 0.37 2.5</size>
+						<size>0.1 0.1 0.6</size>
 					</box>
 				</geometry>
 				<material>

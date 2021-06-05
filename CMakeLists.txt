@@ -136,12 +136,17 @@ add_executable(openspace_mover_cpp src/app_inof_openspace_mover.cpp)
 add_dependencies(openspace_mover_cpp ${${PROJECT_NAME}_EXPORTED_TARGET} ${catkin_EXPORTED_TARGETS})
 target_link_libraries(openspace_mover_cpp ${catkin_LIBRARIES} )
 
+add_executable(app_move_in_office src/app_inof_move_in_office.cpp)
+add_dependencies(app_move_in_office ${${PROJECT_NAME}_EXPORTED_TARGET} ${catkin_EXPORTED_TARGETS})
+target_link_libraries(app_move_in_office ${catkin_LIBRARIES} )
+
 
 add_library(a_star_search_algo lib/a_star_search_algo.cpp)
+add_library(map_array lib/map.cpp)
 
 add_executable(path_planner lib/path_planner.cpp)
 add_dependencies(path_planner ${${PROJECT_NAME}_EXPORTED_TARGET} ${catkin_EXPORTED_TARGETS})
-target_link_libraries(path_planner ${catkin_LIBRARIES} a_star_search_algo)
+target_link_libraries(path_planner ${catkin_LIBRARIES} a_star_search_algo map_array)
 
 ## Add cmake target dependencies of the library
 ## as an example, code may need to be generated before libraries
@@ -197,13 +202,13 @@ catkin_install_python(PROGRAMS
 
 ## Mark executables for installation
 ## See http://docs.ros.org/melodic/api/catkin/html/howto/format1/building_executables.html
-install(TARGETS path_planner openspace_mover_cpp
+install(TARGETS path_planner openspace_mover_cpp app_move_in_office
   RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
 
 ## Mark libraries for installation
 ## See http://docs.ros.org/melodic/api/catkin/html/howto/format1/building_libraries.html
-install(TARGETS a_star_search_algo
+install(TARGETS a_star_search_algo map_array
   ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
   LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
   RUNTIME DESTINATION ${CATKIN_GLOBAL_BIN_DESTINATION}

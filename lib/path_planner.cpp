@@ -13,6 +13,9 @@ bool plan_path(inof_robot::path_points::Request &req, inof_robot::path_points::R
 	dest = std::make_pair(req.pose_end.x, req.pose_end.y);
 		
 	std::vector<node> path = path_planning_fn(src, dest);
+	
+	ROS_INFO("Function Executed properly! \n");
+
 	if(path.size() != 0)
 	{
 		std::cout << "Total nodes: " << path.size() << std::endl;
@@ -26,10 +29,12 @@ bool plan_path(inof_robot::path_points::Request &req, inof_robot::path_points::R
 			ret_arr.push_back(p);
 		}
 		res.points = ret_arr;
-		res.path_avl = true;
+		res.path_len = ret_arr.size();
 	}
 	else {
-		res.path_avl = false;
+		std::vector<inof_robot::Pose> ret_arr;
+		res.points = ret_arr;
+		res.path_len = 0;
 	}
 	return true;
 }
