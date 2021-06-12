@@ -1,23 +1,23 @@
 <?xml version="1.0"?>
 <sdf version="1.7">
 
-	<model name="Office1Walls">
+	<model name="miniOfficeWalls">
 
 		<static>true</static>
 		<link name="office">
 			<collision name="left_wall_collision">
-				<pose>0.025 1.82 1.25 1.5708 0 1.5708</pose>
+				<pose>0.01 0.75 0.5 1.5708 0 1.5708</pose>
 				<geometry>
 					<box>
-						<size>3.64 2.5 0.05</size>
+						<size>1.5 1 0.02</size>
 					</box>
 				</geometry>
 			</collision>
 			<visual name="left_wall_visual">
-				<pose>0.025 1.82 1.25 1.5708 0 1.5708</pose>
+				<pose>0.01 0.75 0.5 1.5708 0 1.5708</pose>
 				<geometry>
 					<box>
-						<size>3.64 2.5 0.05</size>
+						<size>1.5 1 0.02</size>
 						</box>
 				</geometry>
 				<material>
@@ -35,18 +35,18 @@
 	
 
 			<collision name="front_wall_collision">
-				<pose>1.37 3.615 1.25 1.5708 0 0</pose>
+				<pose>0.75 1.5 0.5 1.5708 0 0</pose>
 				<geometry>
 					<box>
-						<size>2.74 2.5 0.05</size>
+						<size>1.5 1 0.02</size>
 					</box>
 				</geometry>
 			</collision>
 			<visual name="front_wall_visual">
-				<pose>1.37 3.615 1.25 1.5708 0 0</pose>
+				<pose>0.75 1.5 0.5 1.5708 0 0</pose>
 				<geometry>
 					<box>
-						<size>2.74 2.5 0.05</size>
+						<size>1.5 1 0.02</size>
 					</box>
 				</geometry>
 				<material>
@@ -64,18 +64,18 @@
 			
 
 			<collision name="right_wall_collision">
-				<pose>3.615 1.82 1.25 1.5708 0 1.5708</pose>
+				<pose>1.5 0.75 0.5 1.5708 0 1.5708</pose>
 				<geometry>
 					<box>
-						<size>3.64 2.5 0.05</size>
+						<size>1.5 1 0.02</size>
 					</box>
 				</geometry>
 			</collision>
 			<visual name="right_wall_visual">
-				<pose>3.615 1.82 1.25 1.5708 0 1.5708</pose>
+				<pose>1.5 0.75 0.5 1.5708 0 1.5708</pose>
 				<geometry>
 					<box>
-						<size>3.64 2.5 0.05</size>
+						<size>1.5 1 0.02</size>
 					</box>
 				</geometry>
 				<material>
@@ -93,18 +93,18 @@
 
 
 			<collision name="back_wall_collision">
-				<pose>1.82 0.025 1.25 1.5708 0 0</pose>
+				<pose>0.75 0.01 0.5 1.5708 0 0</pose>
 				<geometry>
 					<box>
-						<size>3.64 2.5 0.05</size>
+						<size>1.5 1 0.02</size>
 					</box>
 				</geometry>
 			</collision>
 			<visual name="back_wall_visual">
-				<pose>1.82 0.025 1.25 1.5708  0 0</pose>
+				<pose>0.75 0.01 0.5 1.5708  0 0</pose>
 				<geometry>
 					<box>
-						<size>3.64 2.5 0.05</size>
+						<size>1.5 1 0.02</size>
 					</box>
 				</geometry>
 				<material>
@@ -121,7 +121,7 @@
 			</visual>
 			
 
-			<collision name="column_collision">
+			<!--collision name="column_collision">
 				<pose> 0.285 0.6 1.25 0 0 0</pose>
 				<geometry>
 					<box>
@@ -147,7 +147,7 @@
 					<specular>0.02 0.02 0.02 1</specular>
 					<emissive>0 0 0 1</emissive>
 				</material>
-			</visual>
+			</visual-->
 		</link>
 	</model>
 </sdf>

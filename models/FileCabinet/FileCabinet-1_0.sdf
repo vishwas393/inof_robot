@@ -5,18 +5,18 @@
 	<static>true</static>
 	<link name="link">
 		<collision name="back">
-			<pose>0 0.0225 0.075 1.5708 0 0</pose>
+			<pose>0 0.145 0.39 1.5708 0 0</pose>
 			<geometry>
 				<box>
-					<size>0.15 0.15 0.005</size>
+					<size>1 0.78 0.01</size>
 				</box>
 			</geometry>
 		</collision>
 		<visual name="back">
-			<pose>0 0.0225 0.075 1.5708 0 0</pose>
+			<pose>0 0.145 0.39 1.5708 0 0</pose>
 			<geometry>
 				<box>
-					<size>0.15 0.15 0.005</size>
+					<size>1 0.78 0.01</size>
 				</box>
 			</geometry>
 			<material>
@@ -29,18 +29,18 @@
 		
 
 		<collision name="left">
-			<pose>-0.0725 0 0.075 0 1.5708 0</pose>
+			<pose>-0.495 0 0.39 0 1.5708 0</pose>
 			<geometry>
 				<box>
-					<size>0.15 0.05 0.005</size>
+					<size>0.78 0.3 0.01</size>
 				</box>
 			</geometry>
 		</collision>
 		<visual name="left">
-			<pose>-0.0725 0 0.075 0 1.5708 0</pose>
+			<pose>-0.495 0 0.39 0 1.5708 0</pose>
 			<geometry>
 				<box>
-					<size>0.15 0.05 0.005</size>
+					<size>0.78 0.3 0.01</size>
 				</box>
 			</geometry>
 			<material>
@@ -53,18 +53,18 @@
 		
 
 		<collision name="right">
-			<pose>0.0725 0 0.075 0 1.5708 0</pose>
+			<pose>0.495 0 0.39 0 1.5708 0</pose>
 			<geometry>
 				<box>
-					<size>0.15 0.05 0.005</size>
+					<size>0.78 0.3 0.01</size>
 				</box>
 			</geometry>
 		</collision>
 		<visual name="right">
-			<pose>0.0725 0 0.075 0 1.5708 0</pose>
+			<pose>0.495 0 0.39 0 1.5708 0</pose>
 			<geometry>
 				<box>
-					<size>0.15 0.05 0.005</size>
+					<size>0.78 0.3 0.01</size>
 				</box>
 			</geometry>
 			<material>
@@ -77,18 +77,18 @@
 		
 
 		<collision name="bottom">
-			<pose>0 0 0.0025 0 0 0</pose>
+			<pose>0 0 0.0.005 0 0 0</pose>
 			<geometry>
 				<box>
-					<size>0.15 0.05 0.005</size>
+					<size>1 0.3 0.01</size>
 				</box>
 			</geometry>
 		</collision>
 		<visual name="bottom">
-			<pose>0 0 0.0025 0 0 0</pose>
+			<pose>0 0 0.005 0 0 0</pose>
 			<geometry>
 				<box>
-					<size>0.15 0.05 0.005</size>
+					<size>1 0.3 0.01</size>
 				</box>
 			</geometry>
 			<material>
@@ -101,18 +101,18 @@
 		
 
 		<collision name="top">
-			<pose>0 0 0.1475 0 0 0</pose>
+			<pose>0 0 0.775 0 0 0</pose>
 			<geometry>
 				<box>
-					<size>0.15 0.05 0.005</size>
+					<size>1 0.3 0.01</size>
 				</box>
 			</geometry>
 		</collision>
 		<visual name="top">
-			<pose>0 0 0.1475 0 0 0</pose>
+			<pose>0 0 0.775 0 0 0</pose>
 			<geometry>
 				<box>
-					<size>0.15 0.05 0.005</size>
+					<size>1 0.3 0.01</size>
 				</box>
 			</geometry>
 			<material>
@@ -125,18 +125,18 @@
 		
 
 		<collision name="shelf_1">
-			<pose>0 0 0.05 0 0 0</pose>
+			<pose>0 0 0.26 0 0 0</pose>
 			<geometry>
 				<box>
-					<size>0.15 0.05 0.005</size>
+					<size>1 0.3 0.01</size>
 				</box>
 			</geometry>
 		</collision>
 		<visual name="shelf_1">
-			<pose>0 0 0.05 0 0 0</pose>
+			<pose>0 0 0.26 0 0 0</pose>
 			<geometry>
 				<box>
-					<size>0.15 0.05 0.005</size>
+					<size>1 0.3 0.01</size>
 				</box>
 			</geometry>
 			<material>
@@ -149,18 +149,18 @@
 		
 
 		<collision name="shelf_2">
-			<pose>0 0 0.1 0 0 0</pose>
+			<pose>0 0 0.52 0 0 0</pose>
 			<geometry>
 				<box>
-					<size>0.15 0.05 0.005</size>
+					<size>1 0.3 0.01</size>
 				</box>
 			</geometry>
 		</collision>
 		<visual name="shelf_2">
-			<pose>0 0 0.1 0 0 0</pose>
+			<pose>0 0 0.52 0 0 0</pose>
 			<geometry>
 				<box>
-					<size>0.15 0.05 0.005</size>
+					<size>1 0.3 0.01</size>
 				</box>
 			</geometry>
 			<material>

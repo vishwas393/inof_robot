@@ -4,8 +4,8 @@
 #include <list>
 #include <utility>
 
-#define R 450
-#define C 773
+#define R 30
+#define C 52
 
 class node {
 	public:

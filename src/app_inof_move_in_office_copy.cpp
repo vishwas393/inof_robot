@@ -40,26 +40,12 @@ class INOF_robot
 	ros::ServiceClient servc;
 	std::vector<std::pair<int, int>> path;
 	void callback_pos(const gazebo_msgs::ModelStates& msg);
-	void set_goal_angle(geometry_msgs::Pose p);
+	void set_goalpoint(std::pair<int, int> p, double *goal);
 };
 
 
-void INOF_robot::set_goal_angle(geometry_msgs::Pose p)
+void INOF_robot::set_goalpoint(std::pair<int, int> p)
 {
-
-	double m1 = 1;
-	double m2 = (p.position.y - goal[2]) / (p.position.x - goal[1]);
-
-	if (m1*m2 == -1) { 
-		goal[0] = M_PI/2; 
-	}
-	else {
-		goal[0] = atan(abs( (m1-m2)/(1+(m1*m2)) ));
-	}
-		
-
-	if      (goal[0] <= M_PI and goal[0] > M_PI/2) { goal[0] -= M_PI; }
-	else if (goal[0] > -M_PI and goal[0] < -M_PI/2) { goal[0] += M_PI; }
 
 }
 
@@ -148,14 +134,15 @@ geometry_msgs::Twist get_control_values(const gazebo_msgs::ModelStates c, INOF_r
 	curr.pose = c.pose[fid];
 	curr.twist = c.twist[fid];
 
-
-
+	double vd = 0.0, wd = 0.0;
+	//double k1=10, k2 =3, k3 =16;
+	double k1=3, k2 =3, k3 =5;
 
 
 	geometry_msgs::Vector3 euler = ToEulerAngles(curr.pose.orientation);
 	
 	double A[3][3] = { {1, 0, 0}, {0, cos(robot->goal[0]), sin(robot->goal[0])}, {0, -sin(robot->goal[0]), cos(robot->goal[0])}};
-	double err[3] = {-robot->goal[0]+euler.z, -robot->goal[1]+curr.pose.position.x, -robot->goal[2]+curr.pose.position.y};
+	double err[3] = {-robot->goal[0]+curr.pose.orientation.z, -robot->goal[1]+curr.pose.position.x, -robot->goal[2]+curr.pose.position.y};
 	
 	if(abs(err[1]) < 0.15 and abs(err[2]) < 0.15)
 	{
@@ -164,24 +151,22 @@ geometry_msgs::Twist get_control_values(const gazebo_msgs::ModelStates c, INOF_r
 			robot->goal[1] = (robot->path.at(robot->path_point_cnt).second)*15.0/100.0; 	//X-axis is second element in pair which corresponds to column in map-array
 			robot->goal[2] = (robot->path.at(robot->path_point_cnt).first)*15.0/100.0;	// Vice versa
 
-			//if      (robot->goal[0] <= M_PI and robot->goal[0] > M_PI/2) { robot->goal[0] -= M_PI; }
-			//else if (robot->goal[0] > -M_PI and robot->goal[0] < -M_PI/2) { robot->goal[0] += M_PI; }
+
+			if      (robot->goal[0] <= M_PI and robot->goal[0] > M_PI/2) { robot->goal[0] -= M_PI; }
+			else if (robot->goal[0] > -M_PI and robot->goal[0] < -M_PI/2) { robot->goal[0] += M_PI; }
 		
-			//robot->set_goal_angle(curr.pose);
 			robot->path_point_cnt++;
 		
 			ROS_WARN_STREAM("Goal Change: theta: " << robot->goal[0] << "   x: " << robot->goal[1] << "   y: " << robot->goal[2] << "  cnt:  " << robot->path_point_cnt << "\n");
 		}
-	/*	else
+		else
 		{
 			err[0] = 0;	err[1] = 0;	err[2] = 0;
-		}*/
+		}
 	}
 	
-	robot->set_goal_angle(curr.pose);
-	//double k1=10, k2 =3, k3 =16;
-	double k1=20, k2 =37, k3 =30;
-	
+	robot->goal[0] = atan2(robot->goal[2]-curr.pose.position.y, robot->goal[1]-curr.pose.position.x);
+
 	double qe[3];
 
 	for(int i=0; i<3; i++)
@@ -189,9 +174,8 @@ geometry_msgs::Twist get_control_values(const gazebo_msgs::ModelStates c, INOF_r
 		qe[i] += A[i][0]*err[0] + A[i][1]*err[1] + A[i][2]*err[2];		
 	}
 
-	double wd = curr.twist.angular.z;
-	double vd = curr.twist.linear.x;
-
+	wd = curr.twist.angular.z;
+	vd = curr.twist.linear.x;
 
 	ret_cmd.linear.x = ( vd - ( k1*abs(vd)*(qe[1] + qe[2]*tan(qe[0])) ) )/cos(qe[0]);
 	ret_cmd.linear.y = 0;
@@ -205,7 +189,7 @@ geometry_msgs::Twist get_control_values(const gazebo_msgs::ModelStates c, INOF_r
 	//ROS_INFO_STREAM("\nte: " << (180*qe[0]/M_PI) << "   xe: " << qe[1] << "   ye: " << qe[2] << "\nvd: " << vd << "   wd: " << wd << "   v: " << ret_cmd.linear.x  << "   w: " << ret_cmd.angular.z << "\n" << "gt: " << (180*robot->goal[0]/M_PI) << "   gx:" << robot->goal[1] << "   gy: " << robot->goal[2] << "\n");
 	
 	
-	ROS_INFO_STREAM("\nte: " << (180*err[0]/M_PI) << "   xe: " << err[1] << "   ye: " << err[2] << "\n" << "gt: " << (180*robot->goal[0]/M_PI) << "   gx:" << robot->goal[1] << "   gy: " << robot->goal[2] << "\n" << "ct: " << (180*euler.z/M_PI) << "   cx: " << curr.pose.position.x << "   cy: " << curr.pose.position.y << "\nCount: " << robot->path_point_cnt);
+	ROS_INFO_STREAM("\nte: " << (180*err[0]/M_PI) << "   xe: " << err[1] << "   ye: " << err[2] << "\n" << "gt: " << (180*robot->goal[0]/M_PI) << "   gx:" << robot->goal[1] << "   gy: " << robot->goal[2] << "\n" << "ct: " << (180*curr.pose.orientation.z/M_PI) << "   cx: " << curr.pose.position.x << "   cy: " << curr.pose.position.y << "\nCount: " << robot->path_point_cnt);
 
 	return ret_cmd;
 }

@@ -15,6 +15,7 @@ A friendly machine which delivers office essentials, from files to coffee!
  - ROS 1 (Robot Operating System, distro. Noetic Ninjemys ver. 1.15.11) and Gazebo (ver. 11.5.1)
  - C++
  - Python
+ - OpenCV
 
 <br/>
 
@@ -60,6 +61,17 @@ Find the demo video [here](https://youtu.be/NiBOTVwJ394)
 
 <br/>
 <br/>
+
+**Application-B:** <br/>
+In this application, the INOF is programmed to follow the pre-registered object (A yellow ball). 
+
+Run the following command to control robot via PS4 remote controller. 
+```sh
+roslaunch inof_robot launch_object_follower.launch
+```
+Find the demo video [here](https://youtu.be/pgnShXFkE3s)
+
+
 
 _Note: You may find other files which are unused, under-development or for different applications and tests. Ignore them, or you may enjoy exploring them!_
 

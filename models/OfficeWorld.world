@@ -11,33 +11,44 @@
 			<pose>0 0 0 0 0 0</pose>
 		</include>
 
+		<!--include>
+			<uri>model://miniOffice</uri>
+			<pose>0 0 0 0 0 0</pose>
+		</include>
+		
+		<include>
+			<uri>model://Table</uri>
+			<name>Table_1</name>
+			<pose>0.02 0.3 0 0 0 0</pose>
+			<scale>0.5 0.5 0.5</scale>
+		</include-->
+		
 		<include>
 			<uri>model://Office1Walls</uri>
 			<pose>0 0 0 0 0 0</pose>
 		</include>
 		
-		<!--include>
+		<include>
 			<uri>model://Office2Walls</uri>
-			<pose>3.69 0 0 0 0 0</pose>
-		</include-->
+			<pose>3.59 0 0 0 0 0</pose>
+		</include>
 
 		<include>
 			<uri>model://Table</uri>
 			<name>Table_1</name>
-			<pose>0.01 0.3 0 0 0 0</pose>
+			<pose>0.05 1.65 0 0 0 0</pose>
 		</include>
 		
-		<!--include>
+		<include>
 			<uri>model://Table</uri>
 			<name>Table_2</name>
-			<pose>3.74 1.65 0 0 0 0</pose>
-		</include-->
+			<pose>3.64 1.65 0 0 0 0</pose>
+		</include>
 
 		<include>
 			<uri>model://FileCabinet</uri>
 			<name>File_Cabinet</name>
-			<pose>0.965 0.2 0 0 0 -1.5708</pose>
+			<pose>7.43 1.25 0 0 0 -1.5708</pose>
 		</include>		
 	</world>
 </sdf>
-

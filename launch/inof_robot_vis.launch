@@ -25,5 +25,12 @@
 		<param name="default_topic" value="/inof_diff_drive_controller/cmd_vel"/>
 	</node-->
 
-	<node name="auto_steer" pkg="inof_robot" type="openspace_mover_cpp" output="screen"/>
+	<node name="path_planner" pkg="inof_robot" type="path_planner"/>
+
+	<!--node name="rqt_robot_steering" pkg="rqt_robot_steering" type="rqt_robot_steering">
+		<param name="default_topic" value="/inof_diff_drive_controller/cmd_vel"/>
+	</node-->
+
+
+	<node name="auto_steer" pkg="inof_robot" type="app_move_in_office" output="screen"/>
 </launch>

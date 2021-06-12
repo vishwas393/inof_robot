@@ -70,7 +70,7 @@ class inof_robot
 		double A[3][3] = { {1, 0, 0}, {0, cos(goal[0]), sin(goal[0])}, {0, -sin(goal[0]), cos(goal[0])}};
 		double err[3] = {-goal[0]+euler.z, -goal[1]+curr.pose[fid].position.x, -goal[2]+curr.pose[fid].position.y};
 		double lsterr[3] = {0, 0, 0};
-		if(abs(err[1]) < 0.5 and abs(err[2]) < 0.5 and path_point_cnt < path.size()-1)
+		if(abs(err[1]) < 0.15 and abs(err[2]) < 0.15 and path_point_cnt < path.size()-1)
 		{
 			path_point_cnt++;
 			
@@ -109,7 +109,7 @@ class inof_robot
 		ret_cmd.angular.z = (wd - ( ( (k2*vd*qe[2]) + k3*abs(vd)*tan(qe[0]) ) * ( (1+cos(2*qe[0]))/2 ) ) );
 
 		//ROS_INFO_STREAM("v: " << ret_cmd.linear.x  << "   w: " << ret_cmd.angular.z );
-		ROS_INFO_STREAM("\nte: " << (180*qe[0]/M_PI) << "   xe: " << qe[1] << "   ye: " << qe[2] << "\nvd: " << vd << "   wd: " << wd << "   v: " << ret_cmd.linear.x  << "   w: " << ret_cmd.angular.z << "\n" << "gt: " << (180*goal[0]/M_PI) << "   gx:" << goal[1] << "   gy: " << goal[2] << "\n");
+		ROS_INFO_STREAM("\nte: " << (180*qe[0]/M_PI) << "   xe: " << err[1] << "   ye: " << err[2] << "\nvd: " << vd << "   wd: " << wd << "   v: " << ret_cmd.linear.x  << "   w: " << ret_cmd.angular.z << "\n" << "gt: " << (180*goal[0]/M_PI) << "   gx:" << goal[1] << "   gy: " << goal[2] << "\n");
 		
 		
 
@@ -128,9 +128,9 @@ class inof_robot
 		ros::init(argc, argv, "openspace_mover_node");
 		ros::NodeHandle nh;
 		
-		path.push_back(std::make_pair(1, 1));
-		/*path.push_back(std::make_pair(-3, 3));
-		path.push_back(std::make_pair( 0, 0));
+		path.push_back(std::make_pair(1.1, 1.1));
+		path.push_back(std::make_pair(1.3, 1.3));
+		/*path.push_back(std::make_pair( 0, 0));
 		path.push_back(std::make_pair( 3,-3));
 		path.push_back(std::make_pair(-3,-3));
 		path.push_back(std::make_pair( 0, 0));*/
@@ -142,9 +142,9 @@ class inof_robot
 		if      (goal[0] <= M_PI and goal[0] > M_PI/2) { goal[0] -= M_PI; }
 		else if (goal[0] > -M_PI and goal[0] < -M_PI/2) { goal[0] += M_PI; }
 		
-		pub  = nh.advertise<geometry_msgs::Twist>("/inof_diff_drive_controller/cmd_vel", 10);
+		pub  = nh.advertise<geometry_msgs::Twist>("/inof_diff_drive_controller/cmd_vel", 50);
 		while(pub.getNumSubscribers() == 0) {}
-		sub_pos = nh.subscribe("/gazebo/model_states", 10, &inof_robot::callback_pos, this);
+		sub_pos = nh.subscribe("/gazebo/model_states", 50, &inof_robot::callback_pos, this);
 	//	sub_twst = nh.subscribe("/inof_diff_drive_controller/odom", 10, &inof_robot::callback_twst, this);
 		ros::spin();
 	}

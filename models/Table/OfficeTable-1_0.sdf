@@ -6,18 +6,18 @@
 		<static>true</static>
 		<link name="link">
 			<collision name="drawers_collision">
-				<pose>0.34 0.1 0.1 0 0 0</pose>
+				<pose>1.75 0.385 0.38 0 0 0</pose>
 				<geometry>
 					<box>
-						<size>0.12 0.2 0.2</size>
+						<size>0.5 0.77 0.76</size>
 					</box>
 				</geometry>
 			</collision>
 			<visual name="drawers_visual">
-				<pose>0.34 0.1 0.1 0 0 0</pose>
+				<pose>1.75 0.385 0.38 0 0 0</pose>
 				<geometry>
 					<box>
-						<size>0.12 0.2 0.2</size>
+						<size>0.5 0.77 0.76</size>
 					</box>
 				</geometry>
 				<material>
@@ -35,18 +35,18 @@
 			
 
 			<collision name="sidesupport_collision">
-				<pose>0.005 0.1 0.1 0 0 0</pose>
+				<pose>0.01 0.385 0.38 0 0 0</pose>
 				<geometry>
 					<box>
-						<size>0.01 0.2 0.2</size>
+						<size>0.02 0.77 0.76</size>
 					</box>
 				</geometry>
 			</collision>
 			<visual name="sidesupport_visual">
-				<pose>0.005 0.1 0.1 0 0 0</pose>
+				<pose>0.01 0.385 0.38 0 0 0</pose>
 				<geometry>
 					<box>
-						<size>0.01 0.2 0.2</size>
+						<size>0.02 0.77 0.76</size>
 					</box>
 				</geometry>
 				<material>
@@ -64,18 +64,18 @@
 			
 
 			<collision name="tabletop_collision">
-				<pose>0.2 0.1 0.205 0 0 0</pose>
+				<pose>1.0 0.385 0.77 0 0 0</pose>
 				<geometry>
 					<box>
-						<size>0.4 0.2 0.01</size>
+						<size>2.0 0.77 0.02</size>
 					</box>
 				</geometry>
 			</collision>
 			<visual name="tabletop_visual">
-				<pose>0.2 0.1 0.205 0 0 0</pose>
+				<pose>1.0 0.385 0.77 0 0 0</pose>
 				<geometry>
 					<box>
-						<size>0.4 0.2 0.01</size>
+						<size>2.0 0.77 0.02</size>
 					</box>
 				</geometry>
 				<material>
@@ -93,18 +93,18 @@
 			
 
 			<collision name="frontsupport_collision">
-				<pose>0.2 0.205 0.105 0 0 0</pose>
+				<pose> 1.0 0.78 0.39 0 0 0</pose>
 				<geometry>
 					<box>
-						<size>0.4 0.01 0.21</size>
+						<size>2.0 0.02 0.78</size>
 					</box>
 				</geometry>
 			</collision>
 			<visual name="frontsupport_visual">
-				<pose>0.2 0.205 0.105 0 0 0</pose>
+				<pose>1.0 0.78 0.39 0 0 0</pose>
 				<geometry>
 					<box>
-						<size>0.4 0.01 0.21</size>
+						<size>2.0 0.02 0.78</size>
 					</box>
 				</geometry>
 				<material>
@@ -122,4 +122,5 @@
 		</link>
 	</model>
 </sdf>
+
 

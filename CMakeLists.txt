@@ -142,11 +142,11 @@ target_link_libraries(app_move_in_office ${catkin_LIBRARIES} )
 
 
 add_library(a_star_search_algo lib/a_star_search_algo.cpp)
-add_library(map_array lib/map.cpp)
+#add_library(map_array lib/map.cpp)
 
 add_executable(path_planner lib/path_planner.cpp)
 add_dependencies(path_planner ${${PROJECT_NAME}_EXPORTED_TARGET} ${catkin_EXPORTED_TARGETS})
-target_link_libraries(path_planner ${catkin_LIBRARIES} a_star_search_algo map_array)
+target_link_libraries(path_planner ${catkin_LIBRARIES} a_star_search_algo )
 
 ## Add cmake target dependencies of the library
 ## as an example, code may need to be generated before libraries
@@ -208,7 +208,7 @@ install(TARGETS path_planner openspace_mover_cpp app_move_in_office
 
 ## Mark libraries for installation
 ## See http://docs.ros.org/melodic/api/catkin/html/howto/format1/building_libraries.html
-install(TARGETS a_star_search_algo map_array
+install(TARGETS a_star_search_algo 
   ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
   LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
   RUNTIME DESTINATION ${CATKIN_GLOBAL_BIN_DESTINATION}
