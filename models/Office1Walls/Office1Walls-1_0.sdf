@@ -63,14 +63,14 @@
 			</visual>
 			
 
-			<collision name="right_wall_collision">
+			<!--collision name="right_wall_collision">
 				<pose>3.615 1.82 1.25 1.5708 0 1.5708</pose>
 				<geometry>
 					<box>
 						<size>3.64 2.5 0.05</size>
 					</box>
 				</geometry>
-			</collision>
+			</collision-->
 			<visual name="right_wall_visual">
 				<pose>3.615 1.82 1.25 1.5708 0 1.5708</pose>
 				<geometry>

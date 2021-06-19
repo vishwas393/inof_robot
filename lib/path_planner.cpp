@@ -16,10 +16,16 @@ bool plan_path(inof_robot::path_points::Request &req, inof_robot::path_points::R
 	
 	ROS_INFO("Function Executed properly! \n");
 
+	for (auto x:path)
+		ROS_INFO_STREAM(x.coords.first << "," << x.coords.second);
+
 	if(path.size() != 0)
 	{
 		std::cout << "Total nodes: " << path.size() << std::endl;
 		std::vector<inof_robot::Pose> ret_arr;
+		
+	
+
 		for(int i=0; i<path.size(); i++)
 		{
 			inof_robot::Pose p;
