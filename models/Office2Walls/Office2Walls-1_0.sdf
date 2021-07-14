@@ -5,14 +5,14 @@
 
 		<static>true</static>
 		<link name="office">
-			<!--collision name="left_wall_collision">
+			<collision name="left_wall_collision">
 				<pose>0.025 2.02 1.25 1.5708 0 1.5708</pose>
 				<geometry>
 					<box>
 						<size>4.04 2.5 0.05</size>
 					</box>
 				</geometry>
-			</collision-->
+			</collision>
 			<visual name="left_wall_visual">
 				<pose>0.025 2.02 1.25 1.5708 0 1.5708</pose>
 				<geometry>

@@ -31,6 +31,6 @@
 		<param name="default_topic" value="/inof_diff_drive_controller/cmd_vel"/>
 	</node-->
 
-
+	<!--node name="graph_plot" pkg="inof_robot" type="gain_plot.py" output="screen"/-->
 	<node name="auto_steer" pkg="inof_robot" type="app_move_in_office" output="screen"/>
 </launch>

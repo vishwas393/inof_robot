@@ -63,16 +63,17 @@ void INOF_robot::set_goal_angle(geometry_msgs::Pose p)
 		goal[0] = M_PI/2; 
 	}
 	else {
-		goal[0] = atan(abs( (m1-m2)/(1+(m1*m2)) ));
+		goal[0] = atan(abs(m2));
+		//goal[0] = atan(abs( (m1-m2)/(1+(m1*m2)) ));
 	}
 
 	
 	//This algorithm has limitation on angle-error. -pi/2 < angle-error < pi/2
 	//So setting angle such that robot goes in reverse (negative velocity). 
 	//But as angle is set as heading direction on every iteration, this rarely comes in picture.
-	if      (goal[0] <= M_PI and goal[0] > M_PI/2) { goal[0] -= M_PI; }
+	/*if      (goal[0] <= M_PI and goal[0] > M_PI/2) { goal[0] -= M_PI; }
 	else if (goal[0] > -M_PI and goal[0] < -M_PI/2) { goal[0] += M_PI; }
-
+	*/
 }
 
 
@@ -181,7 +182,7 @@ geometry_msgs::Twist get_control_values(const gazebo_msgs::ModelStates c, INOF_r
 	
 	//As error can not be absolutely zero, an error of one grid is assumed okay.
 	//Once error is less than 15 cm, next point in the retrived path (from path planner) is set as new goal-point.
-	if(abs(err[1]) < 0.15 and abs(err[2]) < 0.15)
+	if(abs(err[1]) < 0.3 and abs(err[2]) < 0.3)
 	{
 		//If it is not the last point in path(distination), enter.
 		if (robot->path_point_cnt < robot->path.size())
@@ -189,9 +190,20 @@ geometry_msgs::Twist get_control_values(const gazebo_msgs::ModelStates c, INOF_r
 			//goal = [angle, X-poisiton, Y-position];
 			robot->goal[1] = (robot->path.at(robot->path_point_cnt).second)*15.0/100.0; 	//X-axis is second element in pair which corresponds to column in map-array
 			robot->goal[2] = (robot->path.at(robot->path_point_cnt).first)*15.0/100.0;	// Vice versa
-
-			robot->path_point_cnt++;
 		
+			double tmpX = 0, tmpY = 0;
+
+			if(robot->path_point_cnt>0){
+			tmpX = (robot->path.at(robot->path_point_cnt-1).second)*15.0/100.0; 	
+			tmpY = (robot->path.at(robot->path_point_cnt-1).first)*15.0/100.0;	
+			}
+
+			robot->goal[0] = atan2(robot->goal[2]-tmpY, robot->goal[1]-tmpX);
+
+			/*if      (robot->goal[0] <= M_PI and robot->goal[0] > M_PI/2) { robot->goal[0] -= M_PI; }
+			else if (robot->goal[0] > -M_PI and robot->goal[0] < -M_PI/2) { robot->goal[0] += M_PI; }
+			*/
+			robot->path_point_cnt++;
 			ROS_WARN_STREAM("Goal Change: theta: " << robot->goal[0] << "   x: " << robot->goal[1] << "   y: " << robot->goal[2] << "  cnt:  " << robot->path_point_cnt << "\n");
 		}
 	}
@@ -200,15 +212,15 @@ geometry_msgs::Twist get_control_values(const gazebo_msgs::ModelStates c, INOF_r
 	//Angle between X-axis and The line. The line is formed by points
 	//						i.Current position(X1, Y1)
 	//						ii. Goal-point (X2, Y2)
-	robot->set_goal_angle(curr.pose);
+	//robot->set_goal_angle(curr.pose);
 
 
 
-	//double k1=10, k2 =3, k3 =16;
+	//double k1=5, k2 =100, k3 = 1;
 	//double k1=16, k2 =40, k3 =31;		//With error: 0.145 both
 	//double k1=18, k2 =45, k3 =31;		//With error: 0.13 both
-	double k1=20, k2 =45, k3 =31;
-	
+	double k1= 10000, k2 =30000, k3 = 30000;
+
 	double qe[3];
 
 	//From algorithm
@@ -217,9 +229,13 @@ geometry_msgs::Twist get_control_values(const gazebo_msgs::ModelStates c, INOF_r
 		qe[i] += A[i][0]*err[0] + A[i][1]*err[1] + A[i][2]*err[2];		
 	}
 
+
 	//Setting linear and angular velocity variable to current velocities fetched from gazebo's topic
 	double wd = curr.twist.angular.z;
 	double vd = curr.twist.linear.x;
+
+	//if(vd < abs(0.0001) and err[2] > abs(0.3)) { k1 = 100000;}
+
 
 	//New velocity according to the algorithm
 	ret_cmd.linear.x = ( vd - ( k1*abs(vd)*(qe[1] + qe[2]*tan(qe[0])) ) )/cos(qe[0]);
@@ -228,14 +244,14 @@ geometry_msgs::Twist get_control_values(const gazebo_msgs::ModelStates c, INOF_r
 
 	ret_cmd.angular.x = 0;
 	ret_cmd.angular.y = 0;
-	ret_cmd.angular.z = (wd - ( ( (k2*vd*qe[2]) + k3*abs(vd)*tan(qe[0]) ) * ( (1+cos(2*qe[0]))/2 ) ) );
+	ret_cmd.angular.z = (wd - ( ( (k2*vd*qe[2]) + k3*abs(vd)*tan(qe[0]) ) * (pow(cos(qe[0]),2) ) ) );
 
 
 
 
 	//ROS_INFO_STREAM("v: " << ret_cmd.linear.x  << "   w: " << ret_cmd.angular.z );
 	//ROS_INFO_STREAM("\nte: " << (180*qe[0]/M_PI) << "   xe: " << qe[1] << "   ye: " << qe[2] << "\nvd: " << vd << "   wd: " << wd << "   v: " << ret_cmd.linear.x  << "   w: " << ret_cmd.angular.z << "\n" << "gt: " << (180*robot->goal[0]/M_PI) << "   gx:" << robot->goal[1] << "   gy: " << robot->goal[2] << "\n");
-	ROS_INFO_STREAM("\nte: " << (180*err[0]/M_PI) << "   xe: " << err[1] << "   ye: " << err[2] << "\n" << "gt: " << (180*robot->goal[0]/M_PI) << "   gx:" << robot->goal[1] << "   gy: " << robot->goal[2] << "\n" << "ct: " << (180*euler.z/M_PI) << "   cx: " << curr.pose.position.x << "   cy: " << curr.pose.position.y << "\nCount: " << robot->path_point_cnt);
+	//ROS_INFO_STREAM("\nwd: " << wd << "   vd: " << vd << "\nte: " << (180*err[0]/M_PI) << "   xe: " << err[1] << "   ye: " << err[2] << "\n" << "gt: " << (180*robot->goal[0]/M_PI) << "   gx:" << robot->goal[1] << "   gy: " << robot->goal[2] << "\n" << "ct: " << (180*euler.z/M_PI) << "   cx: " << curr.pose.position.x << "   cy: " << curr.pose.position.y << "\nCount: " << robot->path_point_cnt);
 
 
 
@@ -264,8 +280,8 @@ int main(int argc, char** argv)
 	//As of now fixed src point(set to where the robot is initially) and goal point (where it should reach). 
 	//Angle is set afterwards in fun: get_control_values().
 	geometry_msgs::Point src,des;
-	src.x = 150;	des.x = 75;
-	src.y = 90;	des.y = 300;
+	src.x = 10*15;	des.x = 49*15;
+	src.y =  6*15;	des.y = 18*15;
 	src.z = 0;	des.z = 0;
 
 	//Path planner is started as service and srvmsg is sent as request with src and goal points
@@ -308,7 +324,7 @@ int main(int argc, char** argv)
 			ROS_INFO_STREAM("Total Path Points: " << srvmsg.response.path_len << std::endl << "Total Filtered Points: " << app.path.size());
 			
 			for(auto x:app.path)
-				ROS_INFO_STREAM("Path points are: " << x.first << "," << x.second);
+				ROS_INFO_STREAM("Path points are: " << x.first << "," << x.second << "    (" << double(x.first)*0.15 << "," << double(x.second)*0.15 << ")");
 
 
 			//Subscribes to the gazebo's topic->model_states to get values of position and twist of robot. With callback fn: callback_pos()

@@ -197,6 +197,8 @@ catkin_install_python(PROGRAMS
   lib/inof_robot/motions.py 
   lib/inof_robot/odometry.py
   lib/inof_robot/object_detection.py
+  lib/gain_plot.py
+
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
 
