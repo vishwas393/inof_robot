@@ -11,18 +11,6 @@
 			<pose>0 0 0 0 0 0</pose>
 		</include>
 
-		<!--include>
-			<uri>model://miniOffice</uri>
-			<pose>0 0 0 0 0 0</pose>
-		</include>
-		
-		<include>
-			<uri>model://Table</uri>
-			<name>Table_1</name>
-			<pose>0.02 0.3 0 0 0 0</pose>
-			<scale>0.5 0.5 0.5</scale>
-		</include-->
-		
 		<include>
 			<uri>model://Office1Walls</uri>
 			<pose>0 0 0 0 0 0</pose>

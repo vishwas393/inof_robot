@@ -12,62 +12,47 @@
 #include <gazebo_msgs/ModelStates.h>
 #include <gazebo_msgs/ModelState.h>
 #include <inof_robot/path_points.h>
-#include <inof_robot/PathPoints.h>
 #include <inof_robot/Pose.h>
-
-
-//grid factors. one block of 15x15 cm. unit_fac for converting centimeter-->meter.
-float grid_fac = 15.0;
-float unit_fac = 0.01;
 
 
 class INOF_robot
 {
 	public:
-	INOF_robot (std::string n) 
+	INOF_robot (std::string n, geometry_msgs::Point& p) 
 	{
 		name = n;
+		goal[0] = p.z;	goal[1] = p.x; goal[2] = p.y;
+		goal[0] = atan2(goal[2], goal[1]);
+		
+		//This Feed-Forward Algorithm has limitation on angle-error. -pi/2 < angle-error < pi/2
+		//So setting angle such that robot goes in reverse (negative velocity). 
+		//But as angle is set as heading direction on every iteration, this rarely comes in picture.
+		if      (goal[0] <= M_PI and goal[0] > M_PI/2) { goal[0] -= M_PI; }
+		else if (goal[0] > -M_PI and goal[0] < -M_PI/2) { goal[0] += M_PI; }
 	}
 	
 	std::string name;
 	double goal[3];
-	inof_robot::Pose src,des;
 	
+	
+	//private:
 	int path_point_cnt;
 	ros::NodeHandle nh;
-	ros::Subscriber sub_pos, tmpGUISub;
-	ros::Publisher pub, pathPub;
+	ros::Subscriber sub_pos;
+	ros::Publisher pub;
 	ros::ServiceClient servc;
 	std::vector<std::pair<int, int>> path;
 	void callback_pos(const gazebo_msgs::ModelStates& msg);
 	void set_goal_angle(geometry_msgs::Pose p);
-	void set_goal_point(const inof_robot::Pose& p);
 };
 
 
 /*
- * Brief: Setting the goal variable with data received from GUI
- *
+ * Brief: Setting the goal-angle as heading direction. (Intuitive method, not a standard) 
+ * 	  Angle between X-axis and The line formed by points
+ * 	  					i.  Current position(X1, Y1)
+ *						ii. Goal-point (X2, Y2)
  */
-void INOF_robot::set_goal_point(const inof_robot::Pose& p)
-{
-	src.x = 10*15;	des.x = p.x*15;
-	src.y =  6*15;	des.y = p.y*15;
-	src.t = 0;	des.t = 0;
-
-	goal[0] = float(src.t)*0.01;	goal[1] = float(src.x)*0.01; goal[2] = float(src.y)*0.01;
-	goal[0] = atan2(goal[2], goal[1]);
-
-	ROS_INFO_STREAM(src.x << "," << src.y << "," << des.x << "," << des.y);
-	//This Feed-Forward Algorithm has limitation on angle-error. -pi/2 < angle-error < pi/2
-	if      (goal[0] <= M_PI and goal[0] > M_PI/2) { goal[0] -= M_PI; }
-	else if (goal[0] > -M_PI and goal[0] < -M_PI/2) { goal[0] += M_PI; }
-}
-
-/*
- * Brief: Setting the goal-angle
- *
- * */
 void INOF_robot::set_goal_angle(geometry_msgs::Pose p)
 {
 
@@ -79,7 +64,16 @@ void INOF_robot::set_goal_angle(geometry_msgs::Pose p)
 	}
 	else {
 		goal[0] = atan(abs(m2));
+		//goal[0] = atan(abs( (m1-m2)/(1+(m1*m2)) ));
 	}
+
+	
+	//This algorithm has limitation on angle-error. -pi/2 < angle-error < pi/2
+	//So setting angle such that robot goes in reverse (negative velocity). 
+	//But as angle is set as heading direction on every iteration, this rarely comes in picture.
+	/*if      (goal[0] <= M_PI and goal[0] > M_PI/2) { goal[0] -= M_PI; }
+	else if (goal[0] > -M_PI and goal[0] < -M_PI/2) { goal[0] += M_PI; }
+	*/
 }
 
 
@@ -101,6 +95,7 @@ static std::vector<std::pair<int, int>> filter_path_points(inof_robot::path_poin
 		
 		c_theta = atan2(y, x);
 
+		//ROS_INFO_STREAM( msg.response.points[i-1].x << ", " << msg.response.points[i-1].y << ", " << c_theta);
 		if (c_theta != p_theta)
 		{
 			path.push_back(std::make_pair(msg.response.path.points[i-1].x, msg.response.path.points[i-1].y));
@@ -185,8 +180,8 @@ geometry_msgs::Twist get_control_values(const gazebo_msgs::ModelStates c, INOF_r
 	double A[3][3] = { {1, 0, 0}, {0, cos(robot->goal[0]), sin(robot->goal[0])}, {0, -sin(robot->goal[0]), cos(robot->goal[0])}};
 	double err[3] = {-robot->goal[0]+euler.z, -robot->goal[1]+curr.pose.position.x, -robot->goal[2]+curr.pose.position.y};
 	
-	//Due limitation of control algorithm, error can not be absolutely zero, an error of 0.3 is assumed okay.
-	//Once error is in acceptable range, next point in the retrived path (from path planner) is set as new goal-point.
+	//As error can not be absolutely zero, an error of one grid is assumed okay.
+	//Once error is less than 15 cm, next point in the retrived path (from path planner) is set as new goal-point.
 	if(abs(err[1]) < 0.3 and abs(err[2]) < 0.3)
 	{
 		//If it is not the last point in path(distination), enter.
@@ -205,11 +200,25 @@ geometry_msgs::Twist get_control_values(const gazebo_msgs::ModelStates c, INOF_r
 
 			robot->goal[0] = atan2(robot->goal[2]-tmpY, robot->goal[1]-tmpX);
 
+			/*if      (robot->goal[0] <= M_PI and robot->goal[0] > M_PI/2) { robot->goal[0] -= M_PI; }
+			else if (robot->goal[0] > -M_PI and robot->goal[0] < -M_PI/2) { robot->goal[0] += M_PI; }
+			*/
 			robot->path_point_cnt++;
 			ROS_WARN_STREAM("Goal Change: theta: " << robot->goal[0] << "   x: " << robot->goal[1] << "   y: " << robot->goal[2] << "  cnt:  " << robot->path_point_cnt << "\n");
 		}
 	}
 	
+	//Tried to set the angle (goal[0]) as heading direction. 
+	//Angle between X-axis and The line. The line is formed by points
+	//						i.Current position(X1, Y1)
+	//						ii. Goal-point (X2, Y2)
+	//robot->set_goal_angle(curr.pose);
+
+
+
+	//double k1=5, k2 =100, k3 = 1;
+	//double k1=16, k2 =40, k3 =31;		//With error: 0.145 both
+	//double k1=18, k2 =45, k3 =31;		//With error: 0.13 both
 	double k1= 10000, k2 =30000, k3 = 30000;
 
 	double qe[3];
@@ -225,6 +234,7 @@ geometry_msgs::Twist get_control_values(const gazebo_msgs::ModelStates c, INOF_r
 	double wd = curr.twist.angular.z;
 	double vd = curr.twist.linear.x;
 
+	//if(vd < abs(0.0001) and err[2] > abs(0.3)) { k1 = 100000;}
 
 
 	//New velocity according to the algorithm
@@ -239,7 +249,10 @@ geometry_msgs::Twist get_control_values(const gazebo_msgs::ModelStates c, INOF_r
 
 
 
-	ROS_INFO_STREAM("\nwd: " << wd << "   vd: " << vd << "\nte: " << (180*err[0]/M_PI) << "   xe: " << err[1] << "   ye: " << err[2] << "\n" << "gt: " << (180*robot->goal[0]/M_PI) << "   gx:" << robot->goal[1] << "   gy: " << robot->goal[2] << "\n" << "ct: " << (180*euler.z/M_PI) << "   cx: " << curr.pose.position.x << "   cy: " << curr.pose.position.y << "\nCount: " << robot->path_point_cnt);
+	//ROS_INFO_STREAM("v: " << ret_cmd.linear.x  << "   w: " << ret_cmd.angular.z );
+	//ROS_INFO_STREAM("\nte: " << (180*qe[0]/M_PI) << "   xe: " << qe[1] << "   ye: " << qe[2] << "\nvd: " << vd << "   wd: " << wd << "   v: " << ret_cmd.linear.x  << "   w: " << ret_cmd.angular.z << "\n" << "gt: " << (180*robot->goal[0]/M_PI) << "   gx:" << robot->goal[1] << "   gy: " << robot->goal[2] << "\n");
+	//ROS_INFO_STREAM("\nwd: " << wd << "   vd: " << vd << "\nte: " << (180*err[0]/M_PI) << "   xe: " << err[1] << "   ye: " << err[2] << "\n" << "gt: " << (180*robot->goal[0]/M_PI) << "   gx:" << robot->goal[1] << "   gy: " << robot->goal[2] << "\n" << "ct: " << (180*euler.z/M_PI) << "   cx: " << curr.pose.position.x << "   cy: " << curr.pose.position.y << "\nCount: " << robot->path_point_cnt);
+
 
 
 	//New twist command returned and will be published in fn:callback_pos().
@@ -260,26 +273,37 @@ int main(int argc, char** argv)
 {
 	ros::init(argc, argv, "app_inof_node");
 
-	INOF_robot app("inof1");
+	//grid factors. one block of 15x15 cm. unit_fac for converting centimeter-->meter.
+	float grid_fac = 15.0;
+	float unit_fac = 0.01;
 
-	inof_robot::Pose gp;
-	gp = *(ros::topic::waitForMessage<inof_robot::Pose>("/inof/gui_goal_points"));
-	app.set_goal_point(gp);	
-	
+	//As of now fixed src point(set to where the robot is initially) and goal point (where it should reach). 
+	//Angle is set afterwards in fun: get_control_values().
+	geometry_msgs::Point src,des;
+	src.x = 10*15;	des.x = 49*15;
+	src.y =  6*15;	des.y = 18*15;
+	src.z = 0;	des.z = 0;
+
 	//Path planner is started as service and srvmsg is sent as request with src and goal points
 	//It will be returned with the path points as an array
 	inof_robot::path_points srvmsg;
-	srvmsg.request.pose_start.x = app.src.y/grid_fac;		// X-axis in gazebo is column for array
-	srvmsg.request.pose_start.y = app.src.x/grid_fac;		// Vice versa
+	srvmsg.request.pose_start.x = src.y/grid_fac;		// X-axis in gazebo is column for array
+	srvmsg.request.pose_start.y = src.x/grid_fac;		// Vice versa
 	srvmsg.request.pose_start.t = 0;
-	srvmsg.request.pose_end.x = app.des.y/grid_fac;
-	srvmsg.request.pose_end.y = app.des.x/grid_fac;
+	srvmsg.request.pose_end.x = des.y/grid_fac;
+	srvmsg.request.pose_end.y = des.x/grid_fac;
 	srvmsg.request.pose_end.t = 0;
+	
+	//point p initializes the robot with its first goal which is nothing but the current location
+	geometry_msgs::Point p;
+	p.x = src.x*unit_fac;		
+	p.y = src.y*unit_fac;	
+	p.z = src.z*unit_fac;
+	
+	INOF_robot app("inof1", p);
+	
 	app.servc = app.nh.serviceClient<inof_robot::path_points>("path_planning_srvc");
 	app.servc.waitForExistence();
-	
-
-	app.pathPub = app.nh.advertise<inof_robot::PathPoints>("/inof/generated_path", 5);
 	
 	//Subscribing to robot's URDF model's command-topic
 	app.pub = app.nh.advertise<geometry_msgs::Twist>("/inof_diff_drive_controller/cmd_vel", 10);
@@ -288,9 +312,6 @@ int main(int argc, char** argv)
 	//Calling path planner service
 	if(app.servc.call(srvmsg))
 	{
-		//Publishing path for GUI
-		app.pathPub.publish(srvmsg.response.path);
-		
 		//If path available
 		if(srvmsg.response.path.path_len)
 		{
@@ -317,3 +338,6 @@ int main(int argc, char** argv)
 		}
 	}
 }
+
+
+

@@ -25,12 +25,10 @@
 		<param name="default_topic" value="/inof_diff_drive_controller/cmd_vel"/>
 	</node-->
 
+	<node name="inof_gui" pkg="inof_robot" type="inof_gui_pyqt.py"/>
+	
 	<node name="path_planner" pkg="inof_robot" type="path_planner"/>
 
-	<!--node name="rqt_robot_steering" pkg="rqt_robot_steering" type="rqt_robot_steering">
-		<param name="default_topic" value="/inof_diff_drive_controller/cmd_vel"/>
-	</node-->
-
-	<!--node name="graph_plot" pkg="inof_robot" type="gain_plot.py" output="screen"/-->
 	<node name="auto_steer" pkg="inof_robot" type="app_move_in_office" output="screen"/>
+
 </launch>

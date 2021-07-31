@@ -35,18 +35,18 @@
 	
 
 			<collision name="front_wall_collision">
-				<pose>1.57 4.015 1.25 1.5708 0 0</pose>
+				<pose>1.345 4.015 1.25 1.5708 0 0</pose>
 				<geometry>
 					<box>
-						<size>3.14 2.5 0.05</size>
+						<size>2.69 2.5 0.05</size>
 					</box>
 				</geometry>
 			</collision>
 			<visual name="front_wall_visual">
-				<pose>1.57 4.015 1.25 1.5708 0 0</pose>
+				<pose>1.345 4.015 1.25 1.5708 0 0</pose>
 				<geometry>
 					<box>
-						<size>3.14 2.5 0.05</size>
+						<size>2.69 2.5 0.05</size>
 					</box>
 				</geometry>
 				<material>

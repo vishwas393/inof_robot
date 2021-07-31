@@ -12,7 +12,7 @@
 	<xacro:property name="wheelradi" value="0.025"/>
 	<xacro:property name="casterlen" value="0.012"/>
 	<xacro:property name="casterwid" value="0.012"/>
-	<xacro:property name="casterhgt" value="0.02375"/>
+	<xacro:property name="casterhgt" value="0.025"/>
 	
 	<xacro:property name="layerweight" value="0.0378169"/>
 	<xacro:property name="supportweight" value="0.0015127"/>

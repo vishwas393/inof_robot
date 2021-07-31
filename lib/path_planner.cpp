@@ -34,13 +34,13 @@ bool plan_path(inof_robot::path_points::Request &req, inof_robot::path_points::R
 			p.t = 0;
 			ret_arr.push_back(p);
 		}
-		res.points = ret_arr;
-		res.path_len = ret_arr.size();
+		res.path.points = ret_arr;
+		res.path.path_len = ret_arr.size();
 	}
 	else {
 		std::vector<inof_robot::Pose> ret_arr;
-		res.points = ret_arr;
-		res.path_len = 0;
+		res.path.points = ret_arr;
+		res.path.path_len = 0;
 	}
 	return true;
 }

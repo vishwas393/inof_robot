@@ -1,5 +1,4 @@
 inof_robot/Pose pose_start
 inof_robot/Pose pose_end
 ---
-int32 path_len
-inof_robot/Pose[] points
+inof_robot/PathPoints path

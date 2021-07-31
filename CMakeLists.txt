@@ -56,6 +56,7 @@ add_message_files(
   FILES
   qrcode.msg
   Pose.msg
+  PathPoints.msg
   ObjLocation.msg
 )
 
@@ -142,7 +143,6 @@ target_link_libraries(app_move_in_office ${catkin_LIBRARIES} )
 
 
 add_library(a_star_search_algo lib/a_star_search_algo.cpp)
-#add_library(map_array lib/map.cpp)
 
 add_executable(path_planner lib/path_planner.cpp)
 add_dependencies(path_planner ${${PROJECT_NAME}_EXPORTED_TARGET} ${catkin_EXPORTED_TARGETS})
@@ -193,11 +193,12 @@ catkin_install_python(PROGRAMS
   src/read_distance.py
   src/app_cmd_control.py
   src/app_ps4controller.py
+  src/inof_gui_pyqt.py
   lib/inof_robot/exponential_coord.py 
   lib/inof_robot/motions.py 
   lib/inof_robot/odometry.py
   lib/inof_robot/object_detection.py
-  lib/gain_plot.py
+
 
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )

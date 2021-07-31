@@ -71,6 +71,24 @@ roslaunch inof_robot launch_object_follower.launch
 ```
 Find the demo video [here](https://youtu.be/pgnShXFkE3s)
 
+<br/>
+<br/>
+
+**Application-C:** <br/>
+Here, the application is developed in simulation environment - [Gazebo]. The INOF is given goal point from GUI (made with [PyQt5])and program calculates the path in the grid-map via *A** *Star* Algorithm. The twist command(linear and angular velocity) is calculated via *Feedforward plus Feedback nonlinear controller*. Reference for controller and A* Algorithm is taken from the book: Kevin M. Lynch and Frank C. Park, 2019, Modern Robotics.
+
+RQT Graph:
+
+
+![RQT Graph](https://github.com/vishwas393/inof_robot/blob/master/img/RQTGRAPH.jpg?raw=true "rqt_graph")
+
+
+Run the following command.
+```sh
+roslaunch inof_robot inof_robot_vis.launch
+```
+Find the demo video [here](https://youtu.be/dZYOJQPXGXA)
+
 
 
 _Note: You may find other files which are unused, under-development or for different applications and tests. Ignore them, or you may enjoy exploring them!_
@@ -78,5 +96,6 @@ _Note: You may find other files which are unused, under-development or for diffe
 
 [network-configurations]: <http://wiki.ros.org/ROS/Tutorials/MultipleMachines>
 [pyPS4Controller library]: <https://pypi.org/project/pyPS4Controller>
-
+[PyQt5]: <https://pypi.org/project/PyQt5>
+[Gazebo]: <http://gazebosim.org>
 
