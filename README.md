@@ -83,8 +83,9 @@ RQT Graph:
 ![RQT Graph](https://github.com/vishwas393/inof_robot/blob/master/img/RQTGRAPH.jpg?raw=true "rqt_graph")
 
 
-Run the following command.
+Run the following commands.
 ```sh
+export GAZEBO_MODEL_PATH=/path/to/ros/src/inof_robot/models
 roslaunch inof_robot inof_robot_vis.launch
 ```
 Find the demo video [here](https://youtu.be/dZYOJQPXGXA)
