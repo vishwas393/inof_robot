@@ -27,6 +27,36 @@ A friendly machine which delivers office essentials, from files to coffee!
 
 <br/><br/>
 ## Applications
+**Application-C:** <br/>
+Here, the application is developed in simulation environment - [Gazebo]. The INOF is given goal point from GUI (made with [PyQt5])and program calculates the path in the grid-map via *A** *Star* Algorithm. The twist command(linear and angular velocity) is calculated via *Feedforward plus Feedback nonlinear controller*. Reference for controller and A* Algorithm is taken from the book: Kevin M. Lynch and Frank C. Park, 2019, Modern Robotics.
+
+RQT Graph:
+
+
+![RQT Graph](https://github.com/vishwas393/inof_robot/blob/master/img/RQTGRAPH.jpg?raw=true "rqt_graph")
+
+
+Run the following commands.
+```sh
+export GAZEBO_MODEL_PATH=/path/to/ros/src/inof_robot/models
+roslaunch inof_robot inof_robot_vis.launch
+```
+Find the demo video [here](https://youtu.be/dZYOJQPXGXA)
+
+**Application-B:** <br/>
+In this application, the INOF is programmed to follow the pre-registered object (A yellow ball). 
+
+Run the following command to control robot via PS4 remote controller. 
+```sh
+roslaunch inof_robot launch_object_follower.launch
+```
+Find the demo video [here](https://youtu.be/pgnShXFkE3s)
+
+<br/>
+<br/>
+
+
+
 **Application-A:** <br/>
 Run the following command to control INOF via movement-commands. Please do necessary [network-configurations] to your system (laptop/PC).
 ```sh
@@ -61,35 +91,6 @@ Find the demo video [here](https://youtu.be/NiBOTVwJ394)
 
 <br/>
 <br/>
-
-**Application-B:** <br/>
-In this application, the INOF is programmed to follow the pre-registered object (A yellow ball). 
-
-Run the following command to control robot via PS4 remote controller. 
-```sh
-roslaunch inof_robot launch_object_follower.launch
-```
-Find the demo video [here](https://youtu.be/pgnShXFkE3s)
-
-<br/>
-<br/>
-
-**Application-C:** <br/>
-Here, the application is developed in simulation environment - [Gazebo]. The INOF is given goal point from GUI (made with [PyQt5])and program calculates the path in the grid-map via *A** *Star* Algorithm. The twist command(linear and angular velocity) is calculated via *Feedforward plus Feedback nonlinear controller*. Reference for controller and A* Algorithm is taken from the book: Kevin M. Lynch and Frank C. Park, 2019, Modern Robotics.
-
-RQT Graph:
-
-
-![RQT Graph](https://github.com/vishwas393/inof_robot/blob/master/img/RQTGRAPH.jpg?raw=true "rqt_graph")
-
-
-Run the following commands.
-```sh
-export GAZEBO_MODEL_PATH=/path/to/ros/src/inof_robot/models
-roslaunch inof_robot inof_robot_vis.launch
-```
-Find the demo video [here](https://youtu.be/dZYOJQPXGXA)
-
 
 
 _Note: You may find other files which are unused, under-development or for different applications and tests. Ignore them, or you may enjoy exploring them!_
